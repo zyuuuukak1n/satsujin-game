@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- [サイトタイトル変更箇所] ブラウザのタブに表示されるタイトルです -->
+    <title>【非公式】山幸閣 連続殺人ゲーム 考察サイト</title>
+
+    <!-- OGP設定項目 -->
+    <meta property="og:url" content="https://zyuuuukak1n.dev/dai2group/satsujin-game/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="随時更新中！｜『殺人ゲーム』非公式考察サイト">
+    <meta property="og:description" content="だいにぐるーぷの最新企画『殺人ゲーム』のファンメイドの非公式考察サイト。登場人物や時系列図など、考察が捗る情報を掲載しています。">
+    <meta property="og:site_name" content="『殺人ゲーム』非公式考察サイト">
+    <meta property="og:image" href="./img_ogp.png">
+    
+    <!-- Tailwind CSS (スタイリング用フレームワーク) の読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome (アイコン用) の読み込み -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts (Noto Serif JP: 明朝体) の読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS のカスタム設定 (テーマカラーやフォントの定義) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // フォントの設定 (明朝体をデフォルトに)
+                    fontFamily: {
+                        serif: ['"Noto Serif JP"', 'serif'],
+                    },
+                    // カスタムカラーの設定 (ここで色を変更するとサイト全体の色味が変わります)
+                    colors: {
+                        dark: '#0a0a0a',      // 背景色1 (やや明るい黒)
+                        darker: '#050505',    // 背景色2 (より暗い黒)
+                        blood: '#8b0000',     // アクセントカラー (血の赤)
+                        ice: '#a0c4ff'        // アクセントカラー (氷の青、役職などに使用)
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- 独自のCSS記述領域 (Tailwindでカバーしきれない細かな調整) -->
+    <style>
+        /* サイト全体のベーススタイル */
+        body {
+            font-family: 'Noto Serif JP', serif;
+            background-color: #0a0a0a;
+            color: #f3f4f6;
+            scroll-behavior: smooth; /* ページ内リンクでなめらかにスクロール */
+        }
+        
+        /* 背景のノイズテクスチャ (不気味さを演出) */
+        .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+        
+        /* トップのメインビジュアル(Hero)の背景設定 */
+        /* [背景画像変更箇所] url('')の中を任意の画像URLや相対パスに変更してください */
+        .hero-bg {
+            background: linear-gradient(to bottom, rgba(10,10,10,0.3), rgba(10,10,10,1)), 
+                        url('https://images.unsplash.com/photo-1548685913-fe6678babe8d?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+        }
+        
+        /* 各セクションのタイトルの下線の装飾 */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background-color: #8b0000; /* 下線の色 */
+        }
+        
+        /* スクロールバーのカスタマイズ (PC閲覧時) */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="bg-noise antialiased">
+
+    <!-- ==========================================
+         ナビゲーションバー (ヘッダー)
+    ========================================== -->
+    <nav class="fixed w-full z-50 bg-darker/90 backdrop-blur-sm border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- ロゴ・サイト名 -->
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-xl font-bold tracking-widest text-white">
+                        <i class="fa-solid fa-mountain-city text-blood mr-2"></i>山幸閣<span class="text-xs ml-2 text-gray-400">連続殺人ゲーム</span>
+                    </a>
+                </div>
+                <!-- PC用メニュー -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-6 text-sm tracking-widest">
+                        <a href="#news" class="hover:text-blood transition-colors duration-300">NEWS</a>
+                        <a href="#intro" class="hover:text-blood transition-colors duration-300">INTRODUCTION</a>
+                        <a href="#story" class="hover:text-blood transition-colors duration-300">STORY</a>
+                        <a href="#cast" class="hover:text-blood transition-colors duration-300">CAST</a>
+                        <a href="#map" class="hover:text-blood transition-colors duration-300">MAP</a>
+                        <a href="#timeline" class="hover:text-blood transition-colors duration-300">TIMELINE</a>
+                        <a href="#clues" class="text-blood font-bold hover:text-white transition-colors duration-300">考察する</a>
+                    </div>
+                </div>
+                <!-- SP用ハンバーガーボタン -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- SP用ドロップダウンメニュー (初期状態はhiddenで非表示) -->
+        <div class="hidden md:hidden bg-darker" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="#news" class="block px-3 py-2 text-base font-medium hover:text-blood">NEWS</a>
+                <a href="#intro" class="block px-3 py-2 text-base font-medium hover:text-blood">INTRODUCTION</a>
+                <a href="#story" class="block px-3 py-2 text-base font-medium hover:text-blood">STORY</a>
+                <a href="#cast" class="block px-3 py-2 text-base font-medium hover:text-blood">CAST</a>
+                <a href="#timeline" class="block px-3 py-2 text-base font-medium hover:text-blood">TIMELINE</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         メインビジュアル (Heroセクション)
+    ========================================== -->
+    <header class="hero-bg h-screen flex items-center justify-center relative">
+        <div class="text-center px-4 z-10">
+            <!-- サブキャッチコピー -->
+            <p class="text-ice tracking-[0.3em] mb-4 text-sm md:text-base text-shadow">60台のカメラが捉えた、2泊3日の狂気。</p>
+            
+            <!-- メインタイトル -->
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-widest text-white drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
+                猛吹雪に閉ざされた<br class="md:hidden"><span class="text-blood">連続殺人ゲーム</span>
+            </h1>
+            
+            <!-- リード文 -->
+            <p class="text-lg md:text-xl font-light tracking-wider max-w-2xl mx-auto text-gray-300 mb-10">
+                逃げ場なし。生存者の中に、殺人鬼が潜んでいる。<br>
+                あなたは、真実に辿り着けるか。
+            </p>
+            
+            <!-- スクロール促すボタン -->
+            <a href="#intro" class="inline-block border border-gray-500 hover:border-blood hover:bg-blood/20 text-white px-8 py-3 rounded tracking-widest transition duration-300">
+                事件の概要を見る <i class="fa-solid fa-angle-down ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- 右上の録画中アイコン演出 -->
+        <div class="absolute top-24 right-8 flex items-center text-red-500 animate-pulse">
+            <div class="w-3 h-3 rounded-full bg-red-600 mr-2"></div>
+            <span class="font-sans font-bold tracking-widest text-sm">REC 00:00:00</span>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         NEWS セクション
+    ========================================== -->
+    <section id="news" class="py-12 bg-dark border-b border-gray-900">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-start md:items-center">
+                <h2 class="text-blood font-bold text-xl tracking-widest mr-8 mb-4 md:mb-0 shrink-0">NEWS</h2>
+                <ul class="space-y-3 w-full">
+                    <!-- NEWS 1件目 (コピペで増やせます) -->
+                    <li class="flex flex-col sm:flex-row sm:items-center border-b border-gray-800 pb-2">
+                        <span class="text-gray-500 text-sm w-32 shrink-0">2026.05.31</span>
+                        <span class="text-red-400 font-bold mr-3 shrink-0"><i class="fa-solid fa-triangle-exclamation"></i> 警告</span>
+                        <a href="#story" class="hover:text-blood transition-colors line-clamp-1">第2の事件発生。スナック前で新たな犠牲者が発見されました。</a>
+                    </li>
+                    <!-- NEWS 2件目 -->
+                    <li class="flex flex-col sm:flex-row sm:items-center border-b border-gray-800 pb-2">
+                        <span class="text-gray-500 text-sm w-32 shrink-0">2026.05.30</span>
+                        <span class="text-gray-400 font-bold mr-3 shrink-0"><i class="fa-solid fa-video"></i> 公開</span>
+                        <a href="#timeline" class="hover:text-blood transition-colors line-clamp-1">第1回緊急集会終了。事件前後のタイムライン情報を更新しました。</a>
+                    </li>
+                    <!-- NEWS 3件目 -->
+                    <li class="flex flex-col sm:flex-row sm:items-center">
+                        <span class="text-gray-500 text-sm w-32 shrink-0">2026.05.30</span>
+                        <span class="text-gray-400 font-bold mr-3 shrink-0"><i class="fa-solid fa-door-open"></i> 開幕</span>
+                        <span class="text-gray-300">山幸閣における連続殺人ゲームが開始されました。皆様の考察をお待ちしております。</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         INTRODUCTION セクション (ルール説明)
+    ========================================== -->
+    <section id="intro" class="py-20 bg-darker">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold section-title tracking-widest">INTRODUCTION</h2>
+            <p class="text-gray-400 mb-12 text-sm tracking-widest">作品概要・ルール</p>
+            
+            <div class="bg-gray-900/50 border border-gray-800 p-8 rounded-lg text-left leading-relaxed space-y-6">
+                <!-- あらすじ -->
+                <p>ここは雪山の奥にあるホテル「山幸閣」。オーナーの趣味により美術品や骨董品が展示される、家族経営の静かな場所。<br>
+                しかし、猛吹雪によりホテルは外部から完全に遮断された。<br>
+                <span class="text-blood font-bold">警察が到着するのは2日後の朝。外へ逃げることも、助けを呼ぶこともできない。</span></p>
+
+                <!-- ルール枠 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div class="bg-dark p-6 border-l-4 border-blood">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><i class="fa-solid fa-gavel text-gray-500 mr-2"></i> 基本ルール</h3>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2 text-sm">
+                            <li>滞在期間は2泊3日。参加者は自由に探索を行う。</li>
+                            <li>宿泊客の中に<strong class="text-white">「殺人鬼」</strong>が潜んでいる。</li>
+                            <li>殺人が発生した場合、生存者による「集会」が開かれ、アリバイ交換を行う。</li>
+                            <li>最終投票で、生存者の半数が殺人鬼を指名できれば生存者側の勝利。</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-6 border-l-4 border-ice">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><i class="fa-solid fa-mask text-gray-500 mr-2"></i> 役職システムと真の勝者</h3>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2 text-sm">
+                            <li>各部屋の金庫には、参加者の「役職」が記されている。</li>
+                            <li>役職の特技を駆使し、事件の真相に迫ることができる。</li>
+                            <li>ゲーム終了後、全員の役職を当て合うボーナスゲームを実施。</li>
+                            <li><strong class="text-white">「自分の役職が最もバレていなかった者」</strong>が真の勝者となり、賞金を総取りする。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         STORY セクション (あらすじ・これまでの展開)
+    ========================================== -->
+    <section id="story" class="py-20 bg-dark">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold section-title tracking-widest">STORY</h2>
+            <p class="text-gray-400 mb-12 text-sm tracking-widest">これまでの展開</p>
+
+            <!-- 縦ライン (タイムライン風のデザイン) -->
+            <div class="space-y-8 text-left relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-700 before:to-transparent">
+                
+                <!-- エピソードブロック (コピペで動画更新ごとに追加できます) -->
+                <!-- Episode 0 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <!-- 中央のアイコン/数字 -->
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-dark bg-gray-800 text-gray-400 font-bold shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow">0</div>
+                    <!-- テキストボックス -->
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-lg bg-gray-900/80 border border-gray-800 hover:border-gray-600 transition duration-300">
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="font-bold text-lg text-white">プロローグ: 閉ざされた山幸閣</h3>
+                            <span class="text-xs text-gray-500 font-mono">DAY 1 - 14:00</span>
+                        </div>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            雪山の奥深くに佇むホテル「山幸閣」に集められた参加者たち。突如告げられた「連続殺人ゲーム」の開幕。外は猛吹雪で完全に孤立。参加者たちは不安を抱えながらも、自らに与えられた「役職」を確認し、腹の探り合いを始める。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Episode 1 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-dark bg-blood text-white font-bold shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow z-10"><i class="fa-solid fa-skull"></i></div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-lg bg-red-950/20 border border-blood/30 hover:border-blood/60 transition duration-300">
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="font-bold text-lg text-red-200">第1の事件: エレベーターの凶行</h3>
+                            <span class="text-xs text-red-400 font-mono">DAY 1 - 15:50</span>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            ゲーム開始からわずか数十分。別館のエレベーター内で清掃員・田中芳子の遺体が発見される。首を絞められた痕跡。すぐさま第1回緊急集会が開かれ、全員のアリバイ確認が行われる。検視官の役職を持つ岩田は、死体や現場から手がかりを探ろうとする。そして飯野は独自に田中の部屋に潜入し、彼女が「ホテルの裏事情」を握っていた事実を知る。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Episode 2 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-dark bg-blood text-white font-bold shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow z-10"><i class="fa-solid fa-skull"></i></div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-lg bg-red-950/20 border border-blood/30 hover:border-blood/60 transition duration-300">
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="font-bold text-lg text-red-200">第2の事件: 狙われるホテル関係者</h3>
+                            <span class="text-xs text-red-400 font-mono">DAY 1 - 19:00前</span>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            夕食の時間が近づき、少しの平穏が訪れたかに見えた矢先。本館1階のスナック前の廊下で、新たな悲鳴が響き渡る。発見されたのはオーナーの次女でありホテルスタッフの黒崎凛の遺体だった。立て続けにホテルサイドの人間が殺害されたことで、事件は単なるゲームではなく、黒崎家の闇に関わる連続殺人である可能性が浮上する。
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         CAST & CORRELATION セクション (登場人物)
+    ========================================== -->
+    <section id="cast" class="py-20 bg-darker">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold section-title tracking-widest">CAST & CORRELATION</h2>
+            <p class="text-gray-400 mb-12 text-sm tracking-widest">登場人物・相関図</p>
+
+            <!-- ▼ 参加者 (だいにぐるーぷ) グループ ▼ -->
+            <h3 class="text-xl font-bold text-left border-l-4 border-gray-500 pl-3 mb-6">参加者 (だいにぐるーぷ)</h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
+                
+                <!-- 【キャラクターカード (アイコンを画像に変更する場合)】 -->
+                <!-- <div class="w-24 h-24 ..."> の中の <i> タグを消し、
+                     <img src="画像URL" class="w-full h-full object-cover"> を入れてください -->
+                
+                <!-- 岩田 -->
+                <div class="bg-dark border border-gray-800 p-4 rounded text-center group hover:border-ice transition">
+                    <div class="w-24 h-24 mx-auto bg-gray-800 rounded-full mb-3 flex items-center justify-center overflow-hidden">
+                        <!-- [画像変更箇所] 顔写真がある場合はここに <img> を挿入 -->
+                        <i class="fa-solid fa-user text-4xl text-gray-600 group-hover:text-ice transition"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">岩田</h4>
+                    <p class="text-xs text-gray-500 mb-2">本館 215号室</p>
+                    <span class="inline-block bg-ice/20 text-ice text-[10px] px-2 py-1 rounded border border-ice/30">【役職: 検視官】</span>
+                    <p class="text-xs text-left text-gray-400 mt-3 h-16 overflow-hidden">別館・本館を広く探索。自らが「検視官」であることを隠しながら、死体の第一発見者となる機会を伺う。</p>
+                </div>
+                
+                <!-- 飯野 -->
+                <div class="bg-dark border border-gray-800 p-4 rounded text-center group hover:border-gray-500 transition">
+                    <div class="w-24 h-24 mx-auto bg-gray-800 rounded-full mb-3 flex items-center justify-center overflow-hidden">
+                        <i class="fa-solid fa-user text-4xl text-gray-600"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">飯野</h4>
+                    <p class="text-xs text-gray-500 mb-2">本館 303号室</p>
+                    <p class="text-xs text-left text-gray-400 mt-3 h-16 overflow-hidden">被害者・田中芳子の部屋に潜入し、「彼女がホテルの裏事情を知っていた」という重要な手がかりを入手する。</p>
+                </div>
+                
+                <!-- 西尾 -->
+                <div class="bg-dark border border-gray-800 p-4 rounded text-center group hover:border-gray-500 transition">
+                    <div class="w-24 h-24 mx-auto bg-gray-800 rounded-full mb-3 flex items-center justify-center overflow-hidden">
+                        <i class="fa-solid fa-user text-4xl text-gray-600"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">西尾</h4>
+                    <p class="text-xs text-gray-500 mb-2">本館 205号室</p>
+                    <p class="text-xs text-left text-gray-400 mt-3 h-16 overflow-hidden">岩田と行動を共にすることが多い。喫煙所に頻出し、周囲の宿泊客の動向を観察している。</p>
+                </div>
+                
+                <!-- 土井谷 -->
+                <div class="bg-dark border border-gray-800 p-4 rounded text-center group hover:border-gray-500 transition">
+                    <div class="w-24 h-24 mx-auto bg-gray-800 rounded-full mb-3 flex items-center justify-center overflow-hidden">
+                        <i class="fa-solid fa-user text-4xl text-gray-600"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">土井谷</h4>
+                    <p class="text-xs text-gray-500 mb-2">部屋不明</p>
+                    <p class="text-xs text-left text-gray-400 mt-3 h-16 overflow-hidden">主に本館1階ロビー周辺に滞在。事件発生時刻に顔ハメパネルで遊んでおり、写真による完璧なアリバイを持つ。</p>
+                </div>
+
+                <!-- 須藤 (追加分) -->
+                <div class="bg-dark border border-gray-800 p-4 rounded text-center group hover:border-gray-500 transition">
+                    <div class="w-24 h-24 mx-auto bg-gray-800 rounded-full mb-3 flex items-center justify-center overflow-hidden">
+                        <i class="fa-solid fa-user text-4xl text-gray-600"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">須藤</h4>
+                    <p class="text-xs text-gray-500 mb-2">本館 212号室</p>
+                    <p class="text-xs text-left text-gray-400 mt-3 h-16 overflow-hidden">第1の事件発生時は自室で寝ていたと主張。今のところ目立った行動は見せず、慎重に様子を伺っている。</p>
+                </div>
+            </div>
+
+            <!-- ▼ ホテル関係者 グループ ▼ -->
+            <h3 class="text-xl font-bold text-left border-l-4 border-blood pl-3 mb-6">ホテル関係者 (山幸閣)</h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
+                <!-- 生存者カード -->
+                <div class="bg-dark border border-gray-800 p-3 rounded text-center">
+                    <h4 class="font-bold">黒崎 恒一</h4>
+                    <p class="text-xs text-gray-500 mb-1">オーナー / 別館612</p>
+                    <p class="text-xs text-left text-gray-400">足が悪い。第1の事件直後、すぐに現場に現れた。</p>
+                </div>
+                <div class="bg-dark border border-gray-800 p-3 rounded text-center">
+                    <h4 class="font-bold">黒崎 林太郎</h4>
+                    <p class="text-xs text-gray-500 mb-1">支配人(婿) / 別館601</p>
+                    <p class="text-xs text-left text-gray-400">長女の夫。事件時はロビーにおりアリバイ成立。</p>
+                </div>
+                <div class="bg-dark border border-gray-800 p-3 rounded text-center border-b-2 border-b-gray-500">
+                    <h4 class="font-bold">黒崎 由美子</h4>
+                    <p class="text-xs text-gray-500 mb-1">長女・スタッフ / 別館602</p>
+                    <p class="text-xs text-left text-gray-400">第1事件直後、なぜか別館6階の現場に現れる。</p>
+                </div>
+                <!-- 死亡者カード (クラスに bg-red-950/20 と border-blood/50 を付与し、DECEASEDラベルを追加) -->
+                <div class="bg-dark border border-blood/50 bg-red-950/20 p-3 rounded text-center relative">
+                    <div class="absolute -top-2 -right-2 bg-blood text-white text-[10px] font-bold px-2 py-1 rounded rotate-12">DECEASED</div>
+                    <h4 class="font-bold text-red-200">黒崎 凛</h4>
+                    <p class="text-xs text-red-400/70 mb-1">次女・スタッフ</p>
+                    <p class="text-xs text-left text-gray-400">【第2の事件被害者】1階スナック前で殺害される。</p>
+                </div>
+                <div class="bg-dark border border-blood/50 bg-red-950/20 p-3 rounded text-center relative">
+                    <div class="absolute -top-2 -right-2 bg-blood text-white text-[10px] font-bold px-2 py-1 rounded rotate-12">DECEASED</div>
+                    <h4 class="font-bold text-red-200">田中 芳子</h4>
+                    <p class="text-xs text-red-400/70 mb-1">清掃員 / 別館610</p>
+                    <p class="text-xs text-left text-gray-400">【第1の事件被害者】宿泊客の秘密を収集する癖があった。</p>
+                </div>
+            </div>
+
+            <!-- ▼ 宿泊客 グループ ▼ -->
+            <h3 class="text-xl font-bold text-left border-l-4 border-gray-500 pl-3 mb-6">宿泊客</h3>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+                <!-- コンパクトなカード -->
+                <div class="bg-dark border border-gray-800 p-3 rounded"><h4 class="font-bold text-sm">リオ</h4><p class="text-[10px] text-gray-500 mb-1">インフルエンサー / 405</p><p class="text-[10px] text-left text-gray-400">常に動画撮影中。彼女の映像が強力な証拠に。</p></div>
+                <!-- 疑わしい人物はボーダー色を変更 (例: border-yellow-900/50) -->
+                <div class="bg-dark border border-yellow-900/50 p-3 rounded"><h4 class="font-bold text-sm">悠斗</h4><p class="text-[10px] text-gray-500 mb-1">スノーボーダー / 402</p><p class="text-[10px] text-left text-gray-400">アリバイ証言で「4階にいた」と明確な嘘をつく。</p></div>
+                <div class="bg-dark border border-yellow-900/50 p-3 rounded"><h4 class="font-bold text-sm">白井 玲司</h4><p class="text-[10px] text-gray-500 mb-1">謎の男 / 501</p><p class="text-[10px] text-left text-gray-400">無言で館内を徘徊。喫煙所周辺で監視行動か。</p></div>
+                <div class="bg-dark border border-gray-800 p-3 rounded"><h4 class="font-bold text-sm">相沢 健二</h4><p class="text-[10px] text-gray-500 mb-1">小説家 / 306</p><p class="text-[10px] text-left text-gray-400">支配人と共にロビーにおり、完璧なアリバイあり。</p></div>
+                <div class="bg-dark border border-gray-800 p-3 rounded"><h4 class="font-bold text-sm">高橋夫婦</h4><p class="text-[10px] text-gray-500 mb-1">新婚 / 213</p><p class="text-[10px] text-left text-gray-400">ロビーでパンフレットを見ていた。</p></div>
+                <div class="bg-dark border border-gray-800 p-3 rounded"><h4 class="font-bold text-sm">佐々木 清</h4><p class="text-[10px] text-gray-500 mb-1">常連客 / 201</p><p class="text-[10px] text-left text-gray-400">自室で仮眠と証言。第2の事件の第一発見者。</p></div>
+            </div>
+            
+            <!-- 簡易相関図 (テキストベース) -->
+            <!-- [画像変更箇所] 将来的に画像で作った相関図を貼る場合は、このdivの中身を <img> に差し替えてください -->
+            <div class="mt-12 bg-gray-900 p-6 rounded-lg border border-gray-800">
+                <h4 class="text-lg font-bold mb-4 text-left">関係性マップ (考察用)</h4>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 p-4 border border-gray-700 border-dashed rounded">
+                    <div class="text-center p-2 bg-dark rounded border border-gray-600 w-full md:w-1/3">
+                        <span class="block text-sm font-bold text-blood mb-1">標的？</span>
+                        <span class="text-gray-300 text-xs">ホテル関係者・黒崎家<br>(遺産トラブルや裏事情？)</span>
+                    </div>
+                    <div class="text-gray-500 text-2xl rotate-90 md:rotate-0"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+                    <div class="text-center p-2 bg-dark rounded border border-yellow-800 w-full md:w-1/3">
+                        <span class="block text-sm font-bold text-yellow-500 mb-1">怪しい動向</span>
+                        <span class="text-gray-300 text-xs">悠斗 (アリバイの嘘)<br>白井 (不可解な徘徊)<br>由美子・オーナー (不自然な現場到着)</span>
+                    </div>
+                    <div class="text-gray-500 text-2xl rotate-90 md:rotate-0"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+                    <div class="text-center p-2 bg-dark rounded border border-green-800 w-full md:w-1/3">
+                        <span class="block text-sm font-bold text-green-500 mb-1">アリバイ確定(DAY1)</span>
+                        <span class="text-gray-300 text-xs">相沢(小説家)、林太郎(支配人)<br>土井谷、高橋夫婦</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         MAP & CAMERA セクション (館内マップ)
+    ========================================== -->
+    <section id="map" class="py-20 bg-dark">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold section-title tracking-widest">MAP & CAMERA</h2>
+            <p class="text-gray-400 mb-12 text-sm tracking-widest">館内マップと監視網</p>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- ▼ 左側：館内マップ構造図 ▼ -->
+                <!-- [画像変更箇所] こちらも画像で用意したマップに差し替える場合は、このdivの中身を <img> に変更してください -->
+                <div class="flex-1 bg-gray-900 border border-gray-800 p-6 rounded-lg relative overflow-hidden">
+                    <h3 class="text-lg font-bold mb-6 text-left border-b border-gray-700 pb-2">山幸閣 構造図</h3>
+                    
+                    <div class="flex justify-between items-end h-80 pt-10">
+                        <!-- 本館 -->
+                        <div class="w-2/5 flex flex-col-reverse justify-end gap-2 h-full relative">
+                            <div class="absolute -top-6 left-0 text-gray-500 font-bold tracking-widest">本館</div>
+                            <div class="bg-gray-800 border border-gray-600 rounded p-2 text-center text-xs h-1/3 flex items-center justify-center relative">
+                                <span class="absolute top-1 left-1 text-[10px] text-gray-400">1F</span>
+                                ロビー / フロント / 大浴場<br>
+                                <span class="text-red-500 font-bold ml-1"><i class="fa-solid fa-xmark"></i> 第2事件現場 (スナック前)</span>
+                            </div>
+                            <div class="bg-gray-800 border border-gray-600 rounded p-2 text-center text-xs h-1/3 flex items-center justify-center relative">
+                                <span class="absolute top-1 left-1 text-[10px] text-gray-400">2F</span>
+                                客室 (201〜215)<br>
+                                <i class="fa-solid fa-video text-red-500/50 mt-1" title="定点カメラ: 205, 215"></i>
+                            </div>
+                            <div class="bg-gray-800 border border-gray-600 rounded p-2 text-center text-xs h-1/3 flex items-center justify-center relative">
+                                <span class="absolute top-1 left-1 text-[10px] text-gray-400">3F</span>
+                                客室 (301〜)
+                                <!-- 渡り廊下の接続点 (CSSで線を描画) -->
+                                <div class="absolute right-0 top-1/2 w-4 border-t-4 border-gray-500"></div>
+                            </div>
+                        </div>
+
+                        <!-- 渡り廊下 -->
+                        <div class="w-1/5 h-1/3 flex items-center justify-center relative">
+                            <div class="w-full h-8 bg-gray-700 border-y-2 border-gray-500 flex items-center justify-center text-[10px] text-gray-300">
+                                渡り廊下<br>(喫煙所)
+                            </div>
+                        </div>
+
+                        <!-- 別館 -->
+                        <div class="w-2/5 flex flex-col-reverse justify-end gap-2 h-[120%] relative -translate-y-[33.3%]">
+                            <div class="absolute -top-6 left-0 text-gray-500 font-bold tracking-widest">別館</div>
+                            <div class="bg-gray-800 border border-gray-600 rounded p-2 text-center text-xs h-[25%] flex items-center justify-center relative">
+                                <span class="absolute top-1 left-1 text-[10px] text-gray-400">3F</span>
+                                大食堂 / 小食堂
+                            </div>
+                            <div class="bg-gray-800 border border-gray-600 rounded p-2 text-center text-xs h-[25%] flex items-center justify-center relative">
+                                <span class="absolute top-1 left-1 text-[10px] text-gray-400">4F</span>
+                                客室 (401〜)<br>
+                                <i class="fa-solid fa-video text-red-500/50 mt-1" title="定点カメラ: 401"></i>
+                            </div>
+                            <div class="bg-gray-800 border border-gray-600 rounded p-2 text-center text-xs h-[25%] flex items-center justify-center relative">
+                                <span class="absolute top-1 left-1 text-[10px] text-gray-400">5F</span>
+                                客室 (501〜)<br>
+                                <i class="fa-solid fa-video text-red-500/50 mt-1" title="定点カメラ: 502"></i>
+                            </div>
+                            <div class="bg-gray-800 border border-gray-600 rounded p-2 text-center text-xs h-[25%] flex flex-col items-center justify-center relative">
+                                <span class="absolute top-1 left-1 text-[10px] text-gray-400">6F</span>
+                                空き部屋・従業員居住区<br>
+                                <span class="text-red-500 font-bold mt-1 text-[10px]"><i class="fa-solid fa-xmark"></i> 第1事件現場 (EV内)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ▼ 右側：監視カメラ情報テキスト ▼ -->
+                <div class="flex-1 text-left space-y-6">
+                    <div class="bg-dark border border-gray-800 p-6 rounded-lg">
+                        <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fa-solid fa-video text-red-600 mr-2"></i> 定点カメラ配置リスト</h3>
+                        <p class="text-sm text-gray-400 mb-4">運営が仕掛けたカメラにより、特定の部屋前の廊下は監視されている。映像を確認できるのは視聴者のみ。</p>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex justify-between border-b border-gray-800 pb-2">
+                                <span class="text-gray-300">本館 205号室 (西尾) 付近</span>
+                                <span class="text-green-500 text-xs">稼働中</span>
+                            </li>
+                            <li class="flex justify-between border-b border-gray-800 pb-2">
+                                <span class="text-gray-300">本館 215号室 (岩田) 付近</span>
+                                <span class="text-green-500 text-xs">稼働中</span>
+                            </li>
+                            <li class="flex justify-between border-b border-gray-800 pb-2">
+                                <span class="text-gray-300">別館 401号室 付近</span>
+                                <span class="text-green-500 text-xs">稼働中</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-gray-300">別館 502号室 付近</span>
+                                <span class="text-green-500 text-xs">稼働中</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-950/20 border border-blood/30 p-6 rounded-lg">
+                        <h3 class="text-lg font-bold mb-2 text-red-200">現場検証ポイント</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            第1の事件現場である「別館エレベーター」は、全階層を移動可能。犯行時刻は15:44〜15:50の間。この6分間にエレベーター内で犯行に及び、死体を残したまま立ち去る必要があった。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         TIMELINE セクション (事件発生時の時系列)
+    ========================================== -->
+    <section id="timeline" class="py-20 bg-darker">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold section-title tracking-widest">TIMELINE</h2>
+            <p class="text-gray-400 mb-12 text-sm tracking-widest">第1の事件・空白の20分</p>
+            
+            <div class="bg-gray-900 border border-gray-800 rounded-lg p-4 md:p-8 text-left">
+                <p class="text-sm text-gray-400 mb-6">インフルエンサー・リオのスマートフォン動画（タイムスタンプ付き）から判明した、事件直前の各キャラクターの動向。この中の誰かが、田中芳子を殺害した。</p>
+                
+                <!-- 縦の線 -->
+                <div class="relative border-l border-gray-700 ml-3 md:ml-6 space-y-6">
+                    
+                    <!-- タイムラインの1要素 (コピペで増やせます) -->
+                    <div class="relative pl-6">
+                        <!-- ドットアイコン -->
+                        <div class="absolute w-3 h-3 bg-gray-500 rounded-full -left-[6.5px] top-1.5 ring-4 ring-darker"></div>
+                        <!-- 時間 -->
+                        <div class="text-xs text-ice font-mono mb-1">15:30 頃</div>
+                        <!-- 内容 -->
+                        <div class="text-sm text-gray-300">飯野、別館のエレベーターを利用。この時点では異常なし。</div>
+                    </div>
+                    
+                    <div class="relative pl-6">
+                        <div class="absolute w-3 h-3 bg-gray-500 rounded-full -left-[6.5px] top-1.5 ring-4 ring-darker"></div>
+                        <div class="text-xs text-ice font-mono mb-1">15:43</div>
+                        <div class="text-sm text-gray-300">リオの動画：3階渡り廊下で、支配人(林太郎)と小説家(相沢)がすれ違う。</div>
+                    </div>
+
+                    <!-- 重要なイベントは色を変えたり、アニメーション(animate-pulse)を付けたりしています -->
+                    <div class="relative pl-6">
+                        <div class="absolute w-4 h-4 bg-yellow-500 rounded-full -left-[8.5px] top-1 ring-4 ring-darker animate-pulse"></div>
+                        <div class="text-xs text-yellow-400 font-mono font-bold mb-1">15:44</div>
+                        <div class="text-sm text-white font-bold bg-gray-800 p-2 rounded inline-block">田中芳子が別館エレベーターのボタンを押し、乗り込む。 (生前最後の姿)</div>
+                    </div>
+
+                    <div class="relative pl-6">
+                        <div class="absolute w-3 h-3 bg-gray-500 rounded-full -left-[6.5px] top-1.5 ring-4 ring-darker"></div>
+                        <div class="text-xs text-ice font-mono mb-1">15:46</div>
+                        <div class="text-sm text-gray-300">リオの動画(音声)：田中芳子が階段で岩田らと会話している声が記録される。</div>
+                    </div>
+
+                    <div class="relative pl-6">
+                        <div class="absolute w-3 h-3 bg-gray-500 rounded-full -left-[6.5px] top-1.5 ring-4 ring-darker"></div>
+                        <div class="text-xs text-ice font-mono mb-1">15:47</div>
+                        <div class="text-sm text-gray-300">次女(黒崎凛)がリオとすれ違う。リオは窓際で撮影を開始。</div>
+                    </div>
+
+                    <div class="relative pl-6">
+                        <div class="absolute w-3 h-3 bg-gray-500 rounded-full -left-[6.5px] top-1.5 ring-4 ring-darker"></div>
+                        <div class="text-xs text-ice font-mono mb-1">15:48</div>
+                        <div class="text-sm text-gray-300">飯野がリオと会話。その後、飯野は階段で6階へ向かう。</div>
+                    </div>
+
+                    <div class="relative pl-6">
+                        <div class="absolute w-4 h-4 bg-blood rounded-full -left-[8.5px] top-1 ring-4 ring-darker shadow-[0_0_10px_rgba(139,0,0,0.8)]"></div>
+                        <div class="text-xs text-red-400 font-mono font-bold mb-1">15:50</div>
+                        <div class="text-base text-white font-bold bg-blood/20 border border-blood/50 p-3 rounded">
+                            別館上階から悲鳴。駆けつけた飯野らが、エレベーター内で田中芳子の死体を発見する。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         CLUES & MYSTERIES セクション (考察材料)
+    ========================================== -->
+    <section id="clues" class="py-20 bg-dark">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold section-title tracking-widest text-blood">CLUES & MYSTERIES</h2>
+            <p class="text-gray-400 mb-12 text-sm tracking-widest">証拠品と考察ポイント</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <!-- 証拠品ファイル -->
+                <div class="bg-gray-900 border border-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 flex items-center border-b border-gray-700 pb-2"><i class="fa-solid fa-folder-open text-yellow-600 mr-2"></i> 証拠品ファイル</h3>
+                    <div class="bg-dark p-4 rounded border border-gray-800 font-mono text-sm text-gray-300">
+                        <p class="text-blood font-bold mb-2">FILE: 田中芳子 調査資料</p>
+                        <ul class="list-none space-y-2">
+                            <li><span class="text-gray-500">関係:</span> 黒崎家とは血縁関係なし</li>
+                            <li><span class="text-gray-500">特徴:</span> 宿泊客のゴミを調べ、客の秘密を収集する癖がある。</li>
+                            <li><span class="text-gray-500">備考:</span> 外部へ出られない現在の<span class="text-white border-b border-blood">ホテルの裏事情を最もよく知る人物</span>。</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-4 leading-relaxed">
+                        【考察】無差別殺人ではなく、秘密を知りすぎたが故の「口封じ」の可能性が高い。殺された田中は誰の秘密を握っていたのか？
+                    </p>
+                </div>
+
+                <!-- 矛盾と謎 (アコーディオン形式) -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold mb-4 flex items-center border-b border-gray-700 pb-2"><i class="fa-solid fa-magnifying-glass text-ice mr-2"></i> 浮かび上がる矛盾</h3>
+                    
+                    <!-- アコーディオン 1 (detailsタグとsummaryタグを使用) -->
+                    <details class="bg-gray-900 border border-gray-700 rounded-lg group">
+                        <summary class="font-bold p-4 cursor-pointer flex justify-between items-center group-hover:text-ice transition-colors">
+                            スノーボーダー・悠斗の明確な嘘
+                            <!-- 開閉時の矢印アイコン -->
+                            <i class="fa-solid fa-chevron-down text-sm transition-transform group-open:rotate-180"></i>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm text-gray-400 border-t border-gray-800 mt-2">
+                            集会にて「事件発生時は4階にいた」と証言したが、リオの動画には彼が別館5階を歩く姿が映り込んでいる。なぜ階数を偽る必要があったのか？犯人なのか、それとも別の目的で5階にいたのか。
+                        </div>
+                    </details>
+
+                    <!-- アコーディオン 2 -->
+                    <details class="bg-gray-900 border border-gray-700 rounded-lg group">
+                        <summary class="font-bold p-4 cursor-pointer flex justify-between items-center group-hover:text-ice transition-colors">
+                            不自然な現場到着
+                            <i class="fa-solid fa-chevron-down text-sm transition-transform group-open:rotate-180"></i>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm text-gray-400 border-t border-gray-800 mt-2">
+                            第1の事件の悲鳴が上がった直後、足が悪いとされるオーナー恒一と、長女の由美子が、驚くべき速さで別館6階の現場に現れた。別館の構造上、即座に駆けつけられる距離にいたと推測される。
+                        </div>
+                    </details>
+
+                    <!-- アコーディオン 3 -->
+                    <details class="bg-gray-900 border border-gray-700 rounded-lg group">
+                        <summary class="font-bold p-4 cursor-pointer flex justify-between items-center group-hover:text-ice transition-colors">
+                            ホテル関係者が狙われる理由
+                            <i class="fa-solid fa-chevron-down text-sm transition-transform group-open:rotate-180"></i>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm text-gray-400 border-t border-gray-800 mt-2">
+                            清掃員、次女と、立て続けにホテルサイドの人間が殺害されている。「黒崎家の遺産相続問題」など、深い内部事情が絡んでいるのは間違いない。
+                        </div>
+                    </details>
+                </div>
+            </div>
+            
+            <!-- X(Twitter)投稿用ボタン -->
+            <div class="mt-16 text-center">
+                <!-- 
+                  Web Intent URLを使用してXの投稿画面を開きます。
+                  text= の後ろに初期入力させたいテキストを入れています。URLエンコード(文字化け防止)は自動処理されます。
+                -->
+                <a href="https://twitter.com/intent/tweet?hashtags=殺人ゲーム&text=【山幸閣 連続殺人ゲーム 考察】%0A私の推理・犯人は…%0A" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="inline-block bg-black hover:bg-gray-900 text-white font-bold py-4 px-10 rounded-full tracking-widest border border-gray-700 hover:border-gray-500 shadow-[0_0_15px_rgba(255,255,255,0.1)] transition duration-300">
+                    <i class="fa-brands fa-x-twitter text-xl mr-2 align-middle"></i> あなたの考察をポストする
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         フッター
+    ========================================== -->
+    <footer class="bg-darker py-8 border-t border-gray-900 text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="text-gray-600 text-sm tracking-widest mb-2">※本サイトは非公式のファンメイド考察サイトです。</p>
+            <p class="text-gray-700 text-xs">© 2026 山幸閣 連続殺人ゲーム 考察班</p>
+        </div>
+    </footer>
+
+</body>
+</html>
